@@ -1095,8 +1095,7 @@ void * LoadMpqTable(
         }
 
         // Free the compression buffer, if any
-        if(pbCompressed != NULL)
-            STORM_FREE(pbCompressed);
+        STORM_FREE(pbCompressed);
     }
 
     // Return the MPQ table
