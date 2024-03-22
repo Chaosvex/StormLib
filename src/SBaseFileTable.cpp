@@ -1012,7 +1012,14 @@ static DWORD BuildFileTableFromBlockTable(
         // free some memory by shrinking the file table
         if(ha->dwFileTableSize > ha->dwMaxFileCount)
         {
-            ha->pFileTable = STORM_REALLOC(TFileEntry, ha->pFileTable, ha->dwMaxFileCount);
+            TFileEntry* ptr = STORM_REALLOC(TFileEntry, ha->pFileTable, ha->dwMaxFileCount);
+
+            if(ptr == NULL)
+            {
+                return ERROR_NOT_ENOUGH_MEMORY;
+            }
+
+            ha->pFileTable = ptr;
             ha->pHeader->BlockTableSize64 = ha->dwMaxFileCount * sizeof(TMPQBlock);
             ha->pHeader->dwBlockTableSize = ha->dwMaxFileCount;
             ha->dwFileTableSize = ha->dwMaxFileCount;
