@@ -1646,7 +1646,7 @@ static void CreateBetHeader(
     TMPQArchive * ha,
     TMPQBetHeader * pBetHeader)
 {
-    TFileEntry * pFileTableEnd = ha->pFileTable + ha->dwFileTableSize;
+    TFileEntry * pFileTableEnd;
     TFileEntry * pFileEntry;
     ULONGLONG MaxByteOffset = 0;
     DWORD FlagArray[MAX_FLAG_INDEX];
