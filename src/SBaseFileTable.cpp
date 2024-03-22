@@ -2693,10 +2693,6 @@ static DWORD BuildFileTable_HetBet(TMPQArchive * ha)
         FreeBetTable(pBetTable);
         dwErrCode = ERROR_SUCCESS;
     }
-    else
-    {
-        dwErrCode = ERROR_FILE_CORRUPT;
-    }
 
     return dwErrCode;
 }
