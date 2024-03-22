@@ -323,7 +323,7 @@ static DWORD ReadMpqFileSingleUnit(TMPQFile * hf, void * pvBuffer, DWORD dwFileP
         }
         else
         {
-            if(hf->pbFileSector != NULL && pbRawData != hf->pbFileSector)
+            if(pbRawData != hf->pbFileSector)
                 memcpy(hf->pbFileSector, pbRawData, hf->dwDataSize);
         }
 
@@ -337,7 +337,7 @@ static DWORD ReadMpqFileSingleUnit(TMPQFile * hf, void * pvBuffer, DWORD dwFileP
 
     // At this moment, we have the file loaded into the file buffer.
     // Copy as much as the caller wants
-    if(dwErrCode == ERROR_SUCCESS && hf->dwSectorOffs == 0)
+    if(dwErrCode == ERROR_SUCCESS)
     {
         // File position is greater or equal to file size ?
         if(dwFilePos >= hf->dwDataSize)
@@ -433,7 +433,7 @@ static DWORD ReadMpkFileSingleUnit(TMPQFile * hf, void * pvBuffer, DWORD dwFileP
 
     // At this moment, we have the file loaded into the file buffer.
     // Copy as much as the caller wants
-    if(dwErrCode == ERROR_SUCCESS && hf->dwSectorOffs == 0)
+    if(dwErrCode == ERROR_SUCCESS)
     {
         // File position is greater or equal to file size ?
         if(dwFilePos >= hf->dwDataSize)
@@ -588,7 +588,7 @@ static DWORD ReadMpqFilePatchFile(TMPQFile * hf, void * pvBuffer, DWORD dwFilePo
     DWORD dwErrCode = ERROR_SUCCESS;
 
     // Make sure that the patch file is loaded completely
-    if(dwErrCode == ERROR_SUCCESS && hf->pbFileData == NULL)
+    if(hf->pbFileData == NULL)
     {
         // Initialize patching process and allocate data
         dwErrCode = Patch_InitPatcher(&Patcher, hf);
