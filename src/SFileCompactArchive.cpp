@@ -26,19 +26,16 @@ static DWORD CheckIfAllFilesKnown(TMPQArchive * ha)
     DWORD dwErrCode = ERROR_SUCCESS;
 
     // Verify the file table
-    if(dwErrCode == ERROR_SUCCESS)
+    for(pFileEntry = ha->pFileTable; pFileEntry < pFileTableEnd; pFileEntry++, dwBlockIndex++)
     {
-        for(pFileEntry = ha->pFileTable; pFileEntry < pFileTableEnd; pFileEntry++, dwBlockIndex++)
+        // If there is an existing entry in the file table, check its name
+        if(pFileEntry->dwFlags & MPQ_FILE_EXISTS)
         {
-            // If there is an existing entry in the file table, check its name
-            if(pFileEntry->dwFlags & MPQ_FILE_EXISTS)
+            // The name must be valid and must not be a pseudo-name
+            if(pFileEntry->szFileName == NULL || IsPseudoFileName(pFileEntry->szFileName, NULL))
             {
-                // The name must be valid and must not be a pseudo-name
-                if(pFileEntry->szFileName == NULL || IsPseudoFileName(pFileEntry->szFileName, NULL))
-                {
-                    dwErrCode = ERROR_UNKNOWN_FILE_NAMES;
-                    break;
-                }
+                dwErrCode = ERROR_UNKNOWN_FILE_NAMES;
+                break;
             }
         }
     }
@@ -160,7 +157,7 @@ static DWORD CopyMpqFileSectors(
 
     // Resolve decryption keys. Note that the file key given
     // in the TMPQFile structure also includes the key adjustment
-    if(dwErrCode == ERROR_SUCCESS && (pFileEntry->dwFlags & MPQ_FILE_ENCRYPTED))
+    if(pFileEntry->dwFlags & MPQ_FILE_ENCRYPTED)
     {
         dwFileKey2 = dwFileKey1 = hf->dwFileKey;
         if(pFileEntry->dwFlags & MPQ_FILE_KEY_V2)
@@ -171,7 +168,7 @@ static DWORD CopyMpqFileSectors(
     }
 
     // If we have to save patch header, do it
-    if(dwErrCode == ERROR_SUCCESS && hf->pPatchInfo != NULL)
+    if(hf->pPatchInfo != NULL)
     {
         BSWAP_ARRAY32_UNSIGNED(hf->pPatchInfo, sizeof(DWORD) * 3);
         if(!FileStream_Write(pNewStream, NULL, hf->pPatchInfo, hf->pPatchInfo->dwLength))
@@ -646,8 +643,7 @@ bool WINAPI SFileCompactArchive(HANDLE hMpq, const TCHAR * szListFile, bool /* b
     // Cleanup and return
     if(pTempStream != NULL)
         FileStream_Close(pTempStream);
-    if(pFileKeys != NULL)
-        STORM_FREE(pFileKeys);
+    STORM_FREE(pFileKeys);
     if(dwErrCode != ERROR_SUCCESS)
         SetLastError(dwErrCode);
     return (dwErrCode == ERROR_SUCCESS);
