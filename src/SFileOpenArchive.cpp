@@ -258,12 +258,9 @@ bool WINAPI SFileOpenArchive(
         return false;
 
     // Check the file size. There must be at least 0x20 bytes
-    if(dwErrCode == ERROR_SUCCESS)
-    {
-        FileStream_GetSize(pStream, &FileSize);
-        if(FileSize < MPQ_HEADER_SIZE_V1)
-            dwErrCode = ERROR_BAD_FORMAT;
-    }
+    FileStream_GetSize(pStream, &FileSize);
+    if(FileSize < MPQ_HEADER_SIZE_V1)
+        dwErrCode = ERROR_BAD_FORMAT;
 
     // Allocate the MPQhandle
     if(dwErrCode == ERROR_SUCCESS)
