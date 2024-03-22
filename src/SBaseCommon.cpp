@@ -901,7 +901,7 @@ ULONGLONG FindFreeMpqSpace(TMPQArchive * ha)
                 FreeSpacePos = pFileEntry->ByteOffset + pFileEntry->dwCmpSize;
 
                 // Add the MD5 chunks, if present
-                if(pHeader->dwRawChunkSize != 0 && pFileEntry->dwCmpSize != 0)
+                if(pHeader->dwRawChunkSize != 0)
                 {
                     dwChunkCount = ((pFileEntry->dwCmpSize - 1) / pHeader->dwRawChunkSize) + 1;
                     FreeSpacePos += dwChunkCount * MD5_DIGEST_SIZE;
