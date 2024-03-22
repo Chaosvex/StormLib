@@ -2113,7 +2113,7 @@ static bool MpqeStream_DetectFileKey(TEncryptedStream * pStream)
 {
     ULONGLONG ByteOffset = 0;
     BYTE EncryptedHeader[MPQE_CHUNK_SIZE];
-    BYTE FileHeader[MPQE_CHUNK_SIZE];
+    alignas(DWORD) BYTE FileHeader[MPQE_CHUNK_SIZE];
 
     // Read the first file chunk
     if(pStream->BaseRead(pStream, &ByteOffset, EncryptedHeader, sizeof(EncryptedHeader)))
