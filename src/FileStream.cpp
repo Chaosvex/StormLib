@@ -1817,6 +1817,8 @@ static bool PartStream_CreateMirror(TBlockStream * pStream)
                 if(PartStream_LoadBitmap(pStream))
                     return true;
             }
+
+            bNeedResizeMirrorStream = false;
         }
 
         // We need to create mirror stream
