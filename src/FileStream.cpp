@@ -1026,8 +1026,7 @@ static bool BlockStream_Read(
     else
     {
         // Read the complete blocks from the file
-        if(EndOffset > pStream->StreamSize)
-            EndOffset = pStream->StreamSize;
+        EndOffset = pStream->StreamSize;
         bResult = pStream->BlockRead(pStream, BlockOffset, EndOffset, BlockBuffer, BytesNeeded, true);
     }
 
