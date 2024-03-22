@@ -531,7 +531,7 @@ static bool BaseMap_Open(TFileStream * pStream, LPCTSTR szFileName, DWORD dwStre
         {
             // Retrieve file size. Don't allow mapping file of a zero size.
             FileSize.LowPart = GetFileSize(hFile, &FileSize.HighPart);
-            if(FileSize.QuadPart != 0)
+            if(FileSize.LowPart != 0)
             {
                 // Now create file mapping over the file
                 hMap = CreateFileMapping(hFile, NULL, PAGE_READONLY, 0, 0, NULL);
