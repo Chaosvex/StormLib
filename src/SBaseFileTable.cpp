@@ -2916,12 +2916,9 @@ DWORD RebuildFileTable(TMPQArchive * ha, DWORD dwNewHashTableSize)
     }
 
     // Allocate new hash table
-    if(dwErrCode == ERROR_SUCCESS)
-    {
-        pHashTable = STORM_ALLOC(TMPQHash, dwNewHashTableSize);
-        if(pHashTable == NULL)
-            dwErrCode = ERROR_NOT_ENOUGH_MEMORY;
-    }
+    pHashTable = STORM_ALLOC(TMPQHash, dwNewHashTableSize);
+    if(pHashTable == NULL)
+        dwErrCode = ERROR_NOT_ENOUGH_MEMORY;
 
     // If both succeeded, we need to rebuild the file table
     if(dwErrCode == ERROR_SUCCESS)
@@ -2981,7 +2978,7 @@ DWORD SaveMPQTables(TMPQArchive * ha)
     TablePos = FindFreeMpqSpace(ha);
 
     // If the MPQ has HET table, we prepare a ready-to-save version
-    if(dwErrCode == ERROR_SUCCESS && ha->pHetTable != NULL)
+    if(ha->pHetTable != NULL)
     {
         pHetTable = TranslateHetTable(ha->pHetTable, &HetTableSize64);
         if(pHetTable == NULL)
