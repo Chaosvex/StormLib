@@ -2907,10 +2907,11 @@ DWORD RebuildFileTable(TMPQArchive * ha, DWORD dwNewHashTableSize)
     // Reallocate the new file table, if needed
     if(dwNewHashTableSize > ha->dwFileTableSize)
     {
-        ha->pFileTable = STORM_REALLOC(TFileEntry, ha->pFileTable, dwNewHashTableSize);
-        if(ha->pFileTable == NULL)
+        TFileEntry* ptr = STORM_REALLOC(TFileEntry, ha->pFileTable, dwNewHashTableSize);
+        if(ptr == NULL)
             return ERROR_NOT_ENOUGH_MEMORY;
 
+        ha->pFileTable = ptr;
         memset(ha->pFileTable + ha->dwFileTableSize, 0, (dwNewHashTableSize - ha->dwFileTableSize) * sizeof(TFileEntry));
     }
 
