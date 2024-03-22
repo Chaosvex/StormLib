@@ -19,11 +19,8 @@ bool WINAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const TCHAR 
     DWORD dwErrCode = ERROR_SUCCESS;
 
     // Open the MPQ file
-    if(dwErrCode == ERROR_SUCCESS)
-    {
-        if(!SFileOpenFileEx(hMpq, szToExtract, dwSearchScope, &hMpqFile))
-            dwErrCode = GetLastError();
-    }
+    if(!SFileOpenFileEx(hMpq, szToExtract, dwSearchScope, &hMpqFile))
+        dwErrCode = GetLastError();
 
     // Create the local file
     if(dwErrCode == ERROR_SUCCESS)
