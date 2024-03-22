@@ -1067,8 +1067,7 @@ static bool BlockStream_GetPos(TFileStream * pStream, ULONGLONG * pByteOffset)
 static void BlockStream_Close(TBlockStream * pStream)
 {
     // Free the data map, if any
-    if(pStream->FileBitmap != NULL)
-        STORM_FREE(pStream->FileBitmap);
+    STORM_FREE(pStream->FileBitmap);
     pStream->FileBitmap = NULL;
 
     // Call the base class for closing the stream
@@ -2297,8 +2296,7 @@ static void Block4Stream_Close(TBlockStream * pStream)
     }
 
     // Free the data map, if any
-    if(pStream->FileBitmap != NULL)
-        STORM_FREE(pStream->FileBitmap);
+    STORM_FREE(pStream->FileBitmap);
     pStream->FileBitmap = NULL;
 
     // Do not call the BaseClose function,
